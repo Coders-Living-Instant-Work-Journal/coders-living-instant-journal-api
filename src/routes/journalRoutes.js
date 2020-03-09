@@ -4,11 +4,13 @@ const journalRouter = express.Router()
 const Entry = require('../models/entry')
 
 journalRouter.post('/create', async (req, res, next) => {
-  req.body.date = (new Date()).toLocaleString()
-  const entry = new Entry(req.body)
-  await entry.save()
-    .then(result => res.status(200).json({ entry }))
-    .catch(next)
+  try {
+    req.body.date = (new Date()).toLocaleString()
+    const entry = new Entry(req.body)
+    await entry.save()
+      .then(result => res.status(200).json({ entry }))
+      .catch(next)
+  } catch (next) {}
 })
 
 journalRouter.get('/read', async (req, res, next) => {

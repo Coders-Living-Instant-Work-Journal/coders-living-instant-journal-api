@@ -4,7 +4,7 @@
   "description": "Server application for Coder's Living Instant Work Journal",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest --coverage",
     "dev": "nodemon index.js"
   },
   "keywords": [],
@@ -14,6 +14,7 @@
     "env": "jest"
   },
   "devDependencies": {
+    "@code-fellows/supergoose": "^1.0.1",
     "jest": "^25.1.0",
     "nodemon": "^2.0.2"
   },
