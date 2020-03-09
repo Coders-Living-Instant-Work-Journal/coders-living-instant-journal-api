@@ -14,17 +14,10 @@ journalRouter.post('/create', async (req, res, next) => {
 journalRouter.get('/read', async (req, res, next) => {
   let allEntries
   if (req.body.category) allEntries = await Entry.find({ category: req.body.category })
-  else if (req.body.id) {
-    allEntries = await Entry.findOne({ _id: req.body.id })
-  }
+  else if (req.body.id) allEntries = await Entry.findOne({ _id: req.body.id })
   else allEntries = await Entry.find({})
   res.status(200).json(allEntries)
 })
-
-// journalRouter.get('/read/:id', async (req, res, next) => {
-//   const allEntries = await Entry.findOne({ id: req.body.id })
-//   res.status(200).json(allEntries)
-// })
 
 journalRouter.put('/update', async (req, res, next) => {
   if (req.body.text && req.body.category) {
