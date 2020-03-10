@@ -3,6 +3,8 @@ const { server } = require('../../src/app')
 const mockRequest = supergoose(server)
 
 let entryId
+let entryEndDate
+let entryStartDate
 
 describe('journalRoutes module:', () => {
   describe('Create route', () => {
@@ -12,6 +14,10 @@ describe('journalRoutes module:', () => {
         .send({ category: 'journalRoutesTest', text: 'attaches to the ships unbreakable diamond' })
         .then(results => {
           entryId = results.body.entry._id
+          entryEndDate = new Date(results.body.entry.date)
+          entryStartDate = new Date(results.body.entry.date)
+          entryStartDate = new Date(entryStartDate.setDate(entryStartDate.getDate() - 1))
+          console.log(entryEndDate, ' - ', entryStartDate)
           expect(results.status).toBe(200)
           expect(results.body.entry.category).toEqual('journalRoutesTest')
           expect(results.body.entry.text).toEqual('attaches to the ships unbreakable diamond')
@@ -65,6 +71,58 @@ describe('journalRoutes module:', () => {
         .send({ category: 'journalRoutesTest' })
         .then(results => {
           expect(results.body[0].text).toEqual('attaches to the ships unbreakable diamond')
+        })
+    })
+
+    test('Return all entries of given category in a date range', () => {
+      return mockRequest
+        .get('/read')
+        .send({
+          category: 'journalRoutesTest',
+          startDate: entryStartDate,
+          endDate: entryEndDate
+        })
+        .then(results => {
+          expect(results.body[0].text).toEqual('attaches to the ships unbreakable diamond')
+        })
+    })
+
+    test('Return all entries in a date range', () => {
+      return mockRequest
+        .get('/read')
+        .send({
+          startDate: entryStartDate,
+          endDate: entryEndDate
+        })
+        .then(results => {
+          expect(results.body.length).toEqual(2)
+        })
+    })
+
+    test('Return no results as no entries for given category are in date range', () => {
+      entryEndDate = new Date(entryEndDate.setDate(entryEndDate.getDate() - 1))
+      entryStartDate = new Date(entryStartDate.setDate(entryStartDate.getDate() - 1))
+      return mockRequest
+        .get('/read')
+        .send({
+          category: 'journalRoutesTest',
+          startDate: entryStartDate,
+          endDate: entryEndDate
+        })
+        .then(results => {
+          expect(results.body.length).toEqual(0)
+        })
+    })
+
+    test('Return no results as no entries are in date range', () => {
+      return mockRequest
+        .get('/read')
+        .send({
+          startDate: entryStartDate,
+          endDate: entryEndDate
+        })
+        .then(results => {
+          expect(results.body.length).toEqual(0)
         })
     })
 

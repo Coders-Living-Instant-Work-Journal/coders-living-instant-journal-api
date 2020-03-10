@@ -13,8 +13,24 @@ journalRouter.post('/create', async (req, res, next) => {
 
 journalRouter.get('/read', async (req, res, next) => {
   let allEntries
-  if (req.body.category) allEntries = await Entry.find({ category: req.body.category })
-  else if (req.body.id) allEntries = await Entry.findOne({ _id: req.body.id })
+  if (req.body.category) {
+    if (req.body.startDate) {
+      allEntries = await Entry.find({
+        category: req.body.category,
+        date: {
+          $gte: req.body.startDate,
+          $lte: req.body.endDate
+        }
+      })
+    } else allEntries = await Entry.find({ category: req.body.category })
+  } else if (req.body.startDate) {
+    allEntries = await Entry.find({
+      date: {
+        $gte: req.body.startDate,
+        $lte: req.body.endDate
+      }
+    })
+  } else if (req.body.id) allEntries = await Entry.findOne({ _id: req.body.id })
   else allEntries = await Entry.find({})
   res.status(200).json(allEntries)
 })
