@@ -13,11 +13,9 @@ journalRouter.post('/create', async (req, res, next) => {
 
 journalRouter.get('/read', async (req, res, next) => {
   let allEntries
-  // console.log(req.body)
   if (req.body.category) allEntries = await Entry.find({ category: req.body.category })
   else if (req.body.id) allEntries = await Entry.findOne({ _id: req.body.id })
   else allEntries = await Entry.find({})
-  // console.log(allEntries)
   res.status(200).json(allEntries)
 })
 
@@ -39,9 +37,7 @@ journalRouter.put('/update', async (req, res, next) => {
 })
 
 journalRouter.delete('/delete', async (req, res, next) => {
-  console.log(req.body.id)
-  const deletedEntry = await Entry.findOne({ _id: req.body.id })
-  await Entry.findByIdAndDelete(req.body.id)
+  const deletedEntry = await Entry.findByIdAndDelete(req.body.id)
   res.status(202).send(`The following journal entry was deleted: 
   ${deletedEntry}`)
 })
