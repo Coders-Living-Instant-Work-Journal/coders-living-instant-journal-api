@@ -1,4 +1,3 @@
-// const Journal = require('../../src/routes/journalRoutes')
 const supergoose = require('@code-fellows/supergoose')
 const { server } = require('../../src/app')
 const mockRequest = supergoose(server)
