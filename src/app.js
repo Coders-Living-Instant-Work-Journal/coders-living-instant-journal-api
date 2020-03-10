@@ -11,6 +11,8 @@ app.use(express.json())
 // Routes
 const journalRouter = require('./routes/journalRoutes')
 app.use(journalRouter)
+const userRouter = require('./routes/userRoutes')
+app.use(userRouter)
 
 // Catch-alls
 const errorHandler = require('./middleware/errorHandler')
