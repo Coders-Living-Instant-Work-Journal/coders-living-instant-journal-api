@@ -78,4 +78,53 @@ describe('journalRoutes module:', () => {
         })
     })
   })
+
+  describe('Update route', () => {
+    test('Update text & category', () => {
+      return mockRequest
+        .put('/update')
+        .send({ _id: entryId, text: 'trying something new', category: 'life goals' })
+        .then(results => {
+          expect(results.text).toEqual(`
+    Updating note text to: "trying something new" 
+    Updating note category to: "life goals"`)
+        })
+    })
+
+    test('Update text only', () => {
+      return mockRequest
+        .put('/update')
+        .send({ _id: entryId, category: 'changing goals' })
+        .then(results => {
+          expect(results.text).toEqual(`
+    Updating note category to: "changing goals"`)
+        })
+    })
+
+    test('Update category only', () => {
+      return mockRequest
+        .put('/update')
+        .send({ _id: entryId, text: 'changing life' })
+        .then(results => {
+          expect(results.text).toEqual(`
+    Updating note text to: "changing life"`)
+        })
+    })
+  })
+
+  describe('Delete route', () => {
+    test('Delete journal entry with given id', () => {
+      mockRequest
+        .get('/read')
+        .then(results => {
+          expect(results.body.length).toEqual(2)
+        })
+      return mockRequest
+        .delete('/delete')
+        .send({ _id: entryId })
+        .then(results => {
+          expect(results.status).toEqual(202)
+        })
+    })
+  })
 })
