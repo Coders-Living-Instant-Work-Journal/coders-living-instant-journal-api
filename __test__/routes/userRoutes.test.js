@@ -3,7 +3,7 @@ const { server } = require('../../src/app')
 const mockRequest = supergoose(server)
 
 describe('userRoutes module:', () => {
-  describe('Signup route', () => {
+  xdescribe('Signup route', () => {
     test('Create a new entry in MongoDB', () => {
       return mockRequest
         .post('/signup')
