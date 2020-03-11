@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "jest --coverage",
-    "dev": "nodemon index.js"
+    "dev": "nodemon index.js",
+    "start": "nodemon"
   },
   "keywords": [],
   "authors": "Eugene Monnier, Andrew Kyllo, Peter Cole",
