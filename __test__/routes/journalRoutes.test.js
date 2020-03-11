@@ -6,7 +6,7 @@ let entryId
 let entryEndDate
 let entryStartDate
 
-describe('journalRoutes module:', () => {
+xdescribe('journalRoutes module:', () => {
   describe('Create route', () => {
     test('Create a new entry in MongoDB', () => {
       return mockRequest
