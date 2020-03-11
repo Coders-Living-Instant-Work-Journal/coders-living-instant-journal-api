@@ -1,9 +1,10 @@
 const express = require('express')
 const journalRouter = express.Router()
 
+const bearerAuth = require('../middleware/bearerAuth')
 const Entry = require('../models/entry')
 
-journalRouter.post('/create', async (req, res, next) => {
+journalRouter.post('/create', bearerAuth, async (req, res, next) => {
   req.body.date = (new Date()).toLocaleString()
   const entry = new Entry(req.body)
   await entry.save()
@@ -11,7 +12,7 @@ journalRouter.post('/create', async (req, res, next) => {
     .catch(next)
 })
 
-journalRouter.get('/read', async (req, res, next) => {
+journalRouter.get('/read', bearerAuth, async (req, res, next) => {
   let allEntries
   if (req.body.category) {
     if (req.body.startDate) {
@@ -35,7 +36,7 @@ journalRouter.get('/read', async (req, res, next) => {
   res.status(200).json(allEntries)
 })
 
-journalRouter.put('/update', async (req, res, next) => {
+journalRouter.put('/update', bearerAuth, async (req, res, next) => {
   if (req.body.text && req.body.category) {
     await Entry.updateOne({ _id: req.body.id }, { text: req.body.text, category: req.body.category })
     res.status(202).send(`
@@ -52,7 +53,7 @@ journalRouter.put('/update', async (req, res, next) => {
   }
 })
 
-journalRouter.delete('/delete', async (req, res, next) => {
+journalRouter.delete('/delete', bearerAuth, async (req, res, next) => {
   const deletedEntry = await Entry.findByIdAndDelete(req.body.id)
   res.status(202).send(`The following journal entry was deleted: 
   ${deletedEntry}`)
