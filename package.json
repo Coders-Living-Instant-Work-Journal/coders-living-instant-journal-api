@@ -8,7 +8,8 @@
   "main": "index.js",
   "scripts": {
     "test": "jest --coverage",
-    "dev": "nodemon index.js"
+    "dev": "nodemon index.js",
+    "start": "node index.js"
   },
   "keywords": [],
   "authors": "Eugene Monnier, Andrew Kyllo, Peter Cole",
