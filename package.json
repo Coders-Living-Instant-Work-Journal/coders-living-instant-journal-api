@@ -2,6 +2,9 @@
   "name": "cliwj_server",
   "version": "0.1.0",
   "description": "Server application for Coder's Living Instant Work Journal",
+  "engines": {
+    "node": "13.8.0"
+  },
   "main": "index.js",
   "scripts": {
     "test": "jest --coverage",
