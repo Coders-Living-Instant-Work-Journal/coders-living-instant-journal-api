@@ -9,10 +9,12 @@ app.use(morgan('dev'))
 app.use(express.json())
 
 // Routes
-const journalRouter = require('./routes/journalRoutes')
-app.use(journalRouter)
+const entryRouter = require('./routes/entryRoutes')
+app.use(entryRouter)
 const userRouter = require('./routes/userRoutes')
 app.use(userRouter)
+const journalRouter = require('./routes/journalRoutes')
+app.use(journalRouter)
 
 // Catch-alls
 const errorHandler = require('./middleware/errorHandler')

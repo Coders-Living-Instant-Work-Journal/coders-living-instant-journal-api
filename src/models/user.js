@@ -1,13 +1,14 @@
 // dependencies
 const mongoose = require('mongoose')
 const jwt = require('jsonwebtoken')
+const bcrypt = require('bcrypt')
 
 const SHHHHH = process.env.SHHHHH
 
 const user = new mongoose.Schema({
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
-  journalId: { type: String }
+  journalId: [{ type: mongoose.Schema.Types.ObjectId, ref: 'journal', autopopulate: true }]
 })
 
 user.plugin(require('mongoose-autopopulate'))
@@ -39,7 +40,9 @@ user.statics.authenticateToken = async function (token) {
 }
 
 user.methods.comparePassword = function (password) {
-  return password === this.password ? this : null
+  return bcrypt.compare(password, this.password)
+    .then(valid => valid ? this : null)
+    .catch(console.error)
 }
 
 module.exports = mongoose.model('user', user)
