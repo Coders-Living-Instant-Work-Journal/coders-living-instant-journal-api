@@ -22,7 +22,6 @@
     "nodemon": "^2.0.2"
   },
   "dependencies": {
-    "base-64": "^0.1.0",
     "bcrypt": "^4.0.1",
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
