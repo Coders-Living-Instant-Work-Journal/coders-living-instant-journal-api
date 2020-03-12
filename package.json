@@ -2,10 +2,14 @@
   "name": "cliwj_server",
   "version": "0.1.0",
   "description": "Server application for Coder's Living Instant Work Journal",
+  "engines": {
+    "node": "13.8.0"
+  },
   "main": "index.js",
   "scripts": {
     "test": "jest --coverage",
-    "dev": "nodemon index.js"
+    "dev": "nodemon index.js",
+    "start": "node index.js"
   },
   "keywords": [],
   "authors": "Eugene Monnier, Andrew Kyllo, Peter Cole",
@@ -19,13 +23,11 @@
     "nodemon": "^2.0.2"
   },
   "dependencies": {
-    "base-64": "^0.1.0",
     "bcrypt": "^4.0.1",
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "jsonwebtoken": "^8.5.1",
-    "jwt": "^0.2.0",
     "minimist": "^1.2.0",
     "mongoose": "^5.9.3",
     "mongoose-autopopulate": "^0.12.0",
