@@ -1,4 +1,3 @@
-const base64 = require('base-64')
 const User = require('../models/user')
 
 function userAuth (req, res, next) {
@@ -6,7 +5,7 @@ function userAuth (req, res, next) {
     next(new Error('Missing authorization header'))
   } else {
     const user = req.headers.authorization.split(' ').pop()
-    const decoded = base64.decode(user)
+    const decoded = Buffer.from(user, 'base64').toString('ascii')
     const [email, pass] = decoded.split(':')
     return User.authenticateUser(email, pass)
       .then(validate)

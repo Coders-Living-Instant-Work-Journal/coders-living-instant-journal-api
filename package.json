@@ -28,7 +28,6 @@
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "jsonwebtoken": "^8.5.1",
-    "jwt": "^0.2.0",
     "minimist": "^1.2.0",
     "mongoose": "^5.9.3",
     "mongoose-autopopulate": "^0.12.0",
