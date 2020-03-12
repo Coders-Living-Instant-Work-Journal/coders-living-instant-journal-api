@@ -7,12 +7,14 @@ const userAuth = require('../middleware/userAuth')
 userRouter.post('/signup', async (req, res, next) => {
   const user = new User(req.body)
   await user.save()
-    .then(result => res.status(200).json({ token: user.generateToken() }))
+    .then(result => { 
+      res.status(200).json({ token: user.generateToken(), id: result._id }) 
+    })
     .catch(next)
 })
 
 userRouter.post('/signin', userAuth, (req, res, next) => {
-  res.status(200).json({ token: req.token })
+  res.status(200).json({ token: req.token, id: req.email._id })
 })
 
 module.exports = userRouter
