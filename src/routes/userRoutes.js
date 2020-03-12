@@ -12,7 +12,7 @@ userRouter.post('/signup', async (req, res, next) => {
 })
 
 userRouter.post('/signin', userAuth, (req, res, next) => {
-  res.status(200).json({ token: req.token })
+  res.status(200).json({ token: req.token, id: req.email._id })
 })
 
 module.exports = userRouter

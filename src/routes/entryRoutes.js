@@ -5,6 +5,7 @@ const bearerAuth = require('../middleware/bearerAuth')
 const Entry = require('../models/entry')
 
 entryRouter.post('/create', bearerAuth, async (req, res, next) => {
+  console.log('create ', req.user)
   req.body.date = (new Date()).toLocaleString()
   const entry = new Entry(req.body)
   await entry.save()
@@ -32,7 +33,7 @@ entryRouter.get('/read', bearerAuth, async (req, res, next) => {
       }
     })
   } else if (req.body.id) allEntries = await Entry.findOne({ _id: req.body.id })
-  else allEntries = await Entry.find({})
+  else allEntries = await Entry.find({ userId: req.body.userId })
   res.status(200).json(allEntries)
 })
 

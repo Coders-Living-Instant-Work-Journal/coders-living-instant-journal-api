@@ -8,10 +8,8 @@ const SHHHHH = process.env.SHHHHH
 const user = new mongoose.Schema({
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
-  journalId: [{ type: mongoose.Schema.Types.ObjectId, ref: 'journal', autopopulate: true }]
+  journalId: [{ type: mongoose.Schema.Types.ObjectId, ref: 'journal' }]
 })
-
-user.plugin(require('mongoose-autopopulate'))
 
 user.methods.generateToken = function () {
   const tokenData = {

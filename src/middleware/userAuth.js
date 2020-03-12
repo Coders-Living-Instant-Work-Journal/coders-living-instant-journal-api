@@ -12,6 +12,7 @@ function userAuth (req, res, next) {
   }
   function validate (email) {
     if (email) {
+      console.log('validate ', email)
       req.email = email
       req.token = email.generateToken()
       next()
