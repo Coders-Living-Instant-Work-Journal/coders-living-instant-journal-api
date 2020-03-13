@@ -8,7 +8,8 @@ const SHHHHH = process.env.SHHHHH
 const user = new mongoose.Schema({
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
-  selectedJournal: { type: mongoose.Schema.Types.ObjectId, ref: 'journal' }
+  selectedJournal: { type: mongoose.Schema.Types.ObjectId, ref: 'journal' },
+  name: { type: String, required: true }
 })
 
 // creates a json web token with the user email and secret
