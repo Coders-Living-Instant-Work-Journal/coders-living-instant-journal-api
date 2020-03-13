@@ -14,7 +14,6 @@ const User = require('../models/user')
 // updates the selectedJournal field of the user with the chosen journal id
 journalRouter.post('/selectj', bearerAuth, async (req, res, next) => {
   await User.updateOne({ _id: req.body.userId }, { selectedJournal: req.body.jId })
-  console.log(req.body)
   res.status(202).send(`
     You've selected the journal: "${req.body.name}"`)
 })
