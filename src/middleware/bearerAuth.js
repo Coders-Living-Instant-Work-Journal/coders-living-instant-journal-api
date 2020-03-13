@@ -9,6 +9,7 @@ function bearerAuth (req, res, next) {
     User.authenticateToken(token)
       .then(validUser => {
         req.body.userId = validUser._id
+        req.body.journalId = validUser.selectedJournal
         req.user = validUser
         next()
       })

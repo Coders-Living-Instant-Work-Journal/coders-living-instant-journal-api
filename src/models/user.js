@@ -8,7 +8,7 @@ const SHHHHH = process.env.SHHHHH
 const user = new mongoose.Schema({
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
-  journalId: [{ type: mongoose.Schema.Types.ObjectId, ref: 'journal' }]
+  selectedJournal: { type: mongoose.Schema.Types.ObjectId, ref: 'journal' }
 })
 
 user.methods.generateToken = function () {
