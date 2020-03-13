@@ -1,5 +1,6 @@
 const User = require('../models/user')
 
+// Authenticates that the token provided is valid
 function bearerAuth (req, res, next) {
   if (!req.headers.authorization) {
     next(new Error('Missing authorization header'))
