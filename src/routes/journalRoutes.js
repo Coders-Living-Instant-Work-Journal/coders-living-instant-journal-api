@@ -14,13 +14,14 @@ journalRouter.post('/selectj', bearerAuth, async (req, res, next) => {
 journalRouter.post('/createj', bearerAuth, async (req, res, next) => {
   const journal = new Journal(req.body)
   await journal.save()
-    .then(result => res.status(200).json({ journal }))
+    .then(result => {
+      res.status(200).json({ journalId:result._id })
+    })
     .catch(next)
 })
 
 journalRouter.get('/readj', bearerAuth, async (req, res, next) => {
   const allJournal = await Journal.find({ userId: req.body.userId })
-  console.log(allJournal)
   res.status(200).json(allJournal)
 })
 
@@ -32,7 +33,6 @@ journalRouter.put('/updatej', bearerAuth, async (req, res, next) => {
 
 journalRouter.delete('/deletej', bearerAuth, async (req, res, next) => {
   const toBeDeleted = await Journal.findOne({ _id: req.body.id })
-  // console.log(toBeDeleted)
   toBeDeleted.entryIds.forEach(async (obj) => { await Entry.findByIdAndDelete(obj._id) })
   const deletedJournal = await Journal.findByIdAndDelete(req.body.id)
   res.status(202).send(`The following journal was deleted: 
