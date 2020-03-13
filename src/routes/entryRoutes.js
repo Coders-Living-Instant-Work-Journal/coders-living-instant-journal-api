@@ -4,10 +4,6 @@ const entryRouter = express.Router()
 const bearerAuth = require('../middleware/bearerAuth')
 const Entry = require('../models/entry')
 
-// function noResults(res) {
-//   if (res.length === 0) res.send('No results found.')
-// }
-
 entryRouter.post('/create', bearerAuth, async (req, res, next) => {
   req.body.date = (new Date()).toLocaleString()
   const entry = new Entry(req.body)
