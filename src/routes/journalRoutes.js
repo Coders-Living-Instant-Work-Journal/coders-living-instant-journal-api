@@ -13,7 +13,7 @@ journalRouter.post('/createj', bearerAuth, async (req, res, next) => {
 })
 
 journalRouter.get('/readj', bearerAuth, async (req, res, next) => {
-  const allJournal = await Journal.find({})
+  const allJournal = await Journal.find({ userId: req.body.userId })
   console.log(allJournal)
   res.status(200).json(allJournal)
 })

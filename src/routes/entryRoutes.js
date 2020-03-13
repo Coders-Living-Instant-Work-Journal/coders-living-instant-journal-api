@@ -18,21 +18,26 @@ entryRouter.get('/read', bearerAuth, async (req, res, next) => {
   if (req.body.category) {
     if (req.body.startDate) {
       allEntries = await Entry.find({
+        userId: req.body.userId,
         category: req.body.category,
         date: {
           $gte: req.body.startDate,
           $lte: req.body.endDate
         }
       })
-    } else allEntries = await Entry.find({ category: req.body.category })
+    } else allEntries = await Entry.find({ category: req.body.category, userId: req.body.userId })
   } else if (req.body.startDate) {
     allEntries = await Entry.find({
+      userId: req.body.userId,
       date: {
         $gte: req.body.startDate,
         $lte: req.body.endDate
       }
     })
-  } else if (req.body.id) allEntries = await Entry.findOne({ _id: req.body.id })
+  } else if (req.body.id) allEntries = await Entry.findOne({
+    userId: req.body.userId,
+    _id: req.body.id
+  })
   else allEntries = await Entry.find({ userId: req.body.userId })
   res.status(200).json(allEntries)
 })
