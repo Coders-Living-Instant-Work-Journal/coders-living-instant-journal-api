@@ -71,6 +71,7 @@ entryRouter.get('/read', bearerAuth, async (req, res, next) => {
       userId: req.body.userId
     })
   }
+
   // if there were no results, return an error message
   if (allEntries.length === 0) allEntries.push('No entries found.')
   res.status(200).json(allEntries)

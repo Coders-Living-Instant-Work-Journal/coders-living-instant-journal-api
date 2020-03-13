@@ -20,7 +20,7 @@ userRouter.post('/signup', async (req, res, next) => {
 // Calls the userAuth middleware
 // If the checks pass then the client is sent an access token
 userRouter.post('/signin', userAuth, (req, res, next) => {
-  res.status(200).json({ token: req.token, id: req.email._id })
+  res.status(200).json({ token: req.token, currentJournal: req.email.selectedJournal})
 })
 
 module.exports = userRouter
