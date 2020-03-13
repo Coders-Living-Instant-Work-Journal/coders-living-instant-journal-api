@@ -4,7 +4,13 @@ const journalRouter = express.Router()
 const bearerAuth = require('../middleware/bearerAuth')
 const Journal = require('../models/journal')
 const Entry = require('../models/entry')
+const User = require('../models/user')
 
+journalRouter.post('/selectj', bearerAuth, async (req, res, next) => {
+  await User.updateOne({ _id: req.body.userId }, { selectedJournal: req.body.jId })
+  res.status(202).send(`
+    You've selected the journal: "${req.body.name}"`)
+})
 journalRouter.post('/createj', bearerAuth, async (req, res, next) => {
   const journal = new Journal(req.body)
   await journal.save()
@@ -13,7 +19,7 @@ journalRouter.post('/createj', bearerAuth, async (req, res, next) => {
 })
 
 journalRouter.get('/readj', bearerAuth, async (req, res, next) => {
-  const allJournal = await Journal.find({})
+  const allJournal = await Journal.find({ userId: req.body.userId })
   console.log(allJournal)
   res.status(200).json(allJournal)
 })

@@ -4,6 +4,10 @@ const entryRouter = express.Router()
 const bearerAuth = require('../middleware/bearerAuth')
 const Entry = require('../models/entry')
 
+// function noResults(res) {
+//   if (res.length === 0) res.send('No results found.')
+// }
+
 entryRouter.post('/create', bearerAuth, async (req, res, next) => {
   req.body.date = (new Date()).toLocaleString()
   const entry = new Entry(req.body)
@@ -17,22 +21,43 @@ entryRouter.get('/read', bearerAuth, async (req, res, next) => {
   if (req.body.category) {
     if (req.body.startDate) {
       allEntries = await Entry.find({
+        journalId: req.body.journalId,
+        userId: req.body.userId,
         category: req.body.category,
         date: {
           $gte: req.body.startDate,
           $lte: req.body.endDate
         }
       })
-    } else allEntries = await Entry.find({ category: req.body.category })
+    } else {
+      allEntries = await Entry.find({
+        category: req.body.category,
+        journalId: req.body.journalId,
+        userId: req.body.userId
+      })
+    }
   } else if (req.body.startDate) {
     allEntries = await Entry.find({
+      journalId: req.body.journalId,
+      userId: req.body.userId,
       date: {
         $gte: req.body.startDate,
         $lte: req.body.endDate
       }
     })
-  } else if (req.body.id) allEntries = await Entry.findOne({ _id: req.body.id })
-  else allEntries = await Entry.find({})
+  } else if (req.body.id) {
+    allEntries = await Entry.findOne({
+      journalId: req.body.journalId,
+      userId: req.body.userId,
+      _id: req.body.id
+    })
+  } else {
+    allEntries = await Entry.find({
+      journalId: req.body.journalId,
+      userId: req.body.userId
+    })
+  }
+  if (allEntries.length === 0) allEntries.push('No entries found.')
   res.status(200).json(allEntries)
 })
 
