@@ -56,6 +56,6 @@ async function getUserEntries (allUserIDs) {
 }
 const schedule = require('node-schedule')
 
-const emailScheduler = schedule.scheduleJob('00 22 * * * *', function () {
+const emailScheduler = schedule.scheduleJob('00 30 16 * * *', function () {
   getAllUserIDs()
 })
