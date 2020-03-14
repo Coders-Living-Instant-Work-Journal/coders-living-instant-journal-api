@@ -12,8 +12,6 @@ const Entry = require('../models/entry')
 // then creates a new Entry instance
 // saves the instance to the entry collection
 entryRouter.post('/create', bearerAuth, async (req, res, next) => {
-  console.log(req.body)
-  
   req.body.date = (new Date()).toLocaleString()
   const entry = new Entry(req.body)
   await entry.save()

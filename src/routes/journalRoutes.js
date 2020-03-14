@@ -47,8 +47,6 @@ journalRouter.put('/updatej', bearerAuth, async (req, res, next) => {
 // then deletes each entry one by one
 // finally deletes the given journal
 journalRouter.delete('/deletej', bearerAuth, async (req, res, next) => {
-  console.log(req.body)
-  
   let toBeDeleted = await Entry.find({ journalId: req.body.journalId })
   console.log(toBeDeleted)
   // toBeDeleted.entryIds.forEach(async (obj) => { await Entry.findByIdAndDelete(obj._id) })
