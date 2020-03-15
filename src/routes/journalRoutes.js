@@ -50,6 +50,17 @@ journalRouter.delete('/deletej', bearerAuth, async (req, res, next) => {
   const toBeDeleted = await Journal.findOne({ _id: req.body.id })
   toBeDeleted.entryIds.forEach(async (obj) => { await Entry.findByIdAndDelete(obj._id) })
   const deletedJournal = await Journal.findByIdAndDelete(req.body.id)
+  const nextJournal = await Journal.find({})
+  if (nextJournal.length > 0) {
+    await User.updateOne({ _id: req.body.userId }, { selectedJournal: nextJournal[0]._id })
+  } else {
+    const journal = new Journal({ name: 'Work', userId: req.body.userId })
+    await journal.save()
+      .then(async result => {
+        await User.updateOne({ _id: req.body.userId }, { selectedJournal: journal._id })
+      })
+      .catch(next)
+  }
   res.status(202).send(`The following journal was deleted: 
   ${deletedJournal}`)
 })
