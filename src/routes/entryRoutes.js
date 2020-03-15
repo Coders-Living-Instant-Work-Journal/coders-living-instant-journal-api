@@ -3,6 +3,7 @@ const entryRouter = express.Router()
 
 const bearerAuth = require('../middleware/bearerAuth')
 const Entry = require('../models/entry')
+const Journal = require('../models/journal')
 
 // all routes use bearerAuth middleware
 // verifies the provided access token
@@ -15,7 +16,10 @@ entryRouter.post('/create', bearerAuth, async (req, res, next) => {
   req.body.date = (new Date()).toLocaleString()
   const entry = new Entry(req.body)
   await entry.save()
-    .then(result => res.status(200).json({ entry }))
+    .then(async result => {
+      await Journal.findOneAndUpdate({ _id: req.body.journalId }, { $push: { entryIds: entry._id } })
+      res.status(200).json({ entry })
+    })
     .catch(next)
 })
 

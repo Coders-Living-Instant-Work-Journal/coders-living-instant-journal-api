@@ -47,12 +47,22 @@ journalRouter.put('/updatej', bearerAuth, async (req, res, next) => {
 // then deletes each entry one by one
 // finally deletes the given journal
 journalRouter.delete('/deletej', bearerAuth, async (req, res, next) => {
-  let toBeDeleted = await Entry.find({ journalId: req.body.journalId })
-  console.log(toBeDeleted)
-  // toBeDeleted.entryIds.forEach(async (obj) => { await Entry.findByIdAndDelete(obj._id) })
-  // const deletedJournal = await Journal.findByIdAndDelete(req.body.id)
+  const toBeDeleted = await Journal.findOne({ _id: req.body.id })
+  toBeDeleted.entryIds.forEach(async (obj) => { await Entry.findByIdAndDelete(obj._id) })
+  const deletedJournal = await Journal.findByIdAndDelete(req.body.id)
+  const nextJournal = await Journal.find({})
+  if (nextJournal.length > 0) {
+    await User.updateOne({ _id: req.body.userId }, { selectedJournal: nextJournal[0]._id })
+  } else {
+    const journal = new Journal({ name: 'Work', userId: req.body.userId })
+    await journal.save()
+      .then(async result => {
+        await User.updateOne({ _id: req.body.userId }, { selectedJournal: journal._id })
+      })
+      .catch(next)
+  }
   res.status(202).send(`The following journal was deleted: 
-  ${toBeDeleted}`)
+  ${deletedJournal}`)
 })
 
 module.exports = journalRouter
