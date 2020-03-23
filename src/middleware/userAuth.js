@@ -1,5 +1,6 @@
 const User = require('../models/user')
 
+// Authenticates user email and password
 function userAuth (req, res, next) {
   if (!req.headers.authorization) {
     next(new Error('Missing authorization header'))
@@ -10,6 +11,7 @@ function userAuth (req, res, next) {
     return User.authenticateUser(email, pass)
       .then(validate)
   }
+  // Generates access token for an authenticated user
   function validate (email) {
     if (email) {
       req.email = email

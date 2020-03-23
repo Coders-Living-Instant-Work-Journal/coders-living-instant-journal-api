@@ -1,13 +1,10 @@
 // dependencies
 const mongoose = require('mongoose')
-// const jwt = require('jsonwebtoken')
-
-// const SHHHHH = process.env.SHHHHH
 
 const journal = new mongoose.Schema({
-  userId: { type: mongoose.Schema.Types.ObjectId, ref: 'user', autopopulate: true },
+  userId: { type: mongoose.Schema.Types.ObjectId, ref: 'user' },
   name: { type: String, required: true },
-  entryIds: [{ type: mongoose.Schema.Types.ObjectId, ref: 'entry', autopopulate: true }]
+  entryIds: [{ type: mongoose.Schema.Types.ObjectId, ref: 'user' }]
 })
 
 journal.plugin(require('mongoose-autopopulate'))
