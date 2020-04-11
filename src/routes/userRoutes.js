@@ -4,6 +4,7 @@ const userRouter = express.Router()
 
 const User = require('../models/user')
 const userAuth = require('../middleware/userAuth')
+const oAuth = require('../middleware/oauth')
 
 // Takes in the request body and constructs a new User instance
 // Stores that user instance to the user collection
@@ -20,7 +21,11 @@ userRouter.post('/signup', async (req, res, next) => {
 // Calls the userAuth middleware
 // If the checks pass then the client is sent an access token
 userRouter.post('/signin', userAuth, (req, res, next) => {
-  res.status(200).json({ token: req.token, currentJournal: req.email.selectedJournal})
+  res.status(200).json({ token: req.token, currentJournal: req.email.selectedJournal })
+})
+
+userRouter.get('/oauth', oAuth, (req, res, next) => {
+  res.status(200).json({ message: 'signed in with oauth' })
 })
 
 module.exports = userRouter
