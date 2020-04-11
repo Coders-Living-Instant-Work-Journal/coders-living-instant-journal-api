@@ -155,10 +155,3 @@ deletes all entries in the journal
   id: <id of the journal to be deleted>
   
   ```
-
-
-
-- `
- 
-
-
