@@ -7,7 +7,7 @@ const options = {
   useUnifiedTopology: true,
   useCreateIndex: true
 }
-const sendEmail = require('./src/emailScheduler')
+// const sendEmail = require('./src/emailScheduler')
 mongoose.connect(MONGODB_URI, options, () => {
   console.log('Connected to MongoDB.')
 })
@@ -51,7 +51,7 @@ async function getUserEntries (allUserIDs) {
       emailEntries += '<hr>'
     })
     console.log('the users email ', emailEntries)
-    await sendEmail(emailEntries, user[1])
+    // await sendEmail(emailEntries, user[1])
   })
 }
 const schedule = require('node-schedule')

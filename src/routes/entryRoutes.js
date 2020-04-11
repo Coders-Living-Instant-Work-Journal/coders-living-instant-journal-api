@@ -13,7 +13,10 @@ const Journal = require('../models/journal')
 // then creates a new Entry instance
 // saves the instance to the entry collection
 entryRouter.post('/create', bearerAuth, async (req, res, next) => {
+
+
   req.body.date = (new Date()).toLocaleString()
+
   const entry = new Entry(req.body)
   await entry.save()
     .then(async result => {
