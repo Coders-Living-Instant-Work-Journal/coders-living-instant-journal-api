@@ -4,7 +4,8 @@ const userRouter = express.Router()
 
 const User = require('../models/user')
 const userAuth = require('../middleware/userAuth')
-const oAuth = require('../middleware/oauth')
+const oAuth = require('../middleware/googleOauth')
+const gitHubOAuth = require('../middleware/oauth')
 
 // Takes in the request body and constructs a new User instance
 // Stores that user instance to the user collection
@@ -25,6 +26,10 @@ userRouter.post('/signin', userAuth, (req, res, next) => {
 })
 
 userRouter.get('/oauth', oAuth, (req, res, next) => {
+  res.status(200).json({ message: 'signed in with oauth' })
+})
+
+userRouter.get('/gitHubOAuth', gitHubOAuth, (req, res, next) => {
   res.status(200).json({ message: 'signed in with oauth' })
 })
 
