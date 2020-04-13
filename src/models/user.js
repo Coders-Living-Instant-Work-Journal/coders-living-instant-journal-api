@@ -6,14 +6,17 @@ const bcrypt = require('bcrypt')
 const SHHHHH = process.env.SHHHHH
 
 const user = new mongoose.Schema({
-  email: { type: String, required: true, unique: true },
-  selectedJournal: { type: mongoose.Schema.Types.ObjectId, ref: 'journal' },
-  name: { type: String, required: true }
+  extId: { type: String, required: true, unique: true },
+  name: { type: String, required: true },
+  email: { type: String, required: true },
+  selectedJournal: { type: mongoose.Schema.Types.ObjectId, ref: 'journal' }
 })
 
 // creates a json web token with the user email and secret
 user.methods.generateToken = function () {
   const tokenData = {
+    id: this._id,
+    name: this.name,
     email: this.email
   }
   return jwt.sign(tokenData, SHHHHH)
