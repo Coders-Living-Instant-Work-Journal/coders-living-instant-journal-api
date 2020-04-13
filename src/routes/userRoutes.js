@@ -8,20 +8,18 @@ const userAuth = require('../middleware/userAuth')
 const oAuth = require('../middleware/googleOauth')
 const gitHubOAuth = require('../middleware/oauth')
 
-const REMOTE_API_ENDPOINT = 'https://api.github.com/user'
-
 // Takes in the provider name, access token, and user e-mail
 userRouter.post('/authenticate', async (req, res) => {
   try {
+    let user
     // Validates access token with provider and grabs the user's external ID and name
     const response = await superagent
-      .get(REMOTE_API_ENDPOINT)
+      .get('https://api.github.com/user')
       .set('Authorization', `token ${req.body.token}`)
       .set('user-agent', 'express-app')
 
     // Checks if user exists in DB with external ID
     const potentialUser = await User.findOne({ extId: response.body.node_id })
-    let user
     // Stores that user instance to the user collection if user doesn't exist
     if (!potentialUser) {
       const newUser = new User({ extId: response.body.node_id, name: response.body.name, email: req.body.email })
