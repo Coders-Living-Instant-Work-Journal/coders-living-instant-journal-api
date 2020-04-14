@@ -8,7 +8,7 @@ const SHHHHH = process.env.SHHHHH
 const user = new mongoose.Schema({
   extId: { type: String, required: true, unique: true },
   name: { type: String, required: true },
-  email: { type: String, required: true },
+  email: { type: String, required: false },
   selectedJournal: { type: mongoose.Schema.Types.ObjectId, ref: 'journal' }
 })
 
