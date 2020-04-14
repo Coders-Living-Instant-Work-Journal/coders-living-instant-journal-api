@@ -28,14 +28,14 @@ async function getRemoteUsername (token) {
   return response.body
 }
 
-async function getUser (userName, userEmail) {
+async function getUser (userInfo) {
   // do we already have the user created?
-  const potentialUser = await User.findOne({ email: userEmail })
+  const potentialUser = await User.findOne({ extId: userInfo.node_id })
   console.log(potentialUser)
   let user
   if (!potentialUser) {
     // create the user
-    const newUser = new User({ name: userName, email: userEmail })
+    const newUser = new User({ name: userInfo.name, email: userInfo.email, extId: userInfo.node_id })
     user = await newUser.save()
   } else {
     user = potentialUser
@@ -56,7 +56,7 @@ async function handleOauth (req, res, next) {
     const remoteUserName = userInfo.name
     console.log('(3) GITHUB USER Name:', remoteUserName)
     console.log('(3) GITHUB USER E-mail:', remoteUserEmail)
-    const [user, token] = await getUser(remoteUserName, remoteUserEmail)
+    const [user, token] = await getUser(userInfo)
     req.user = user
     req.token = token
     console.log('(4a) LOCAL USER:', user)
