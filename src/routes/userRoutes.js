@@ -5,8 +5,8 @@ const userRouter = express.Router()
 
 const User = require('../models/user')
 const userAuth = require('../middleware/userAuth')
-const oAuth = require('../middleware/googleOauth')
-const gitHubOAuth = require('../middleware/oauth')
+const googleOAuth = require('../middleware/googleOAuth')
+const gitHubOAuth = require('../middleware/gitHubOAuth')
 
 // Takes in the provider name, access token, and user e-mail
 userRouter.post('/authenticate', async (req, res) => {
@@ -45,12 +45,12 @@ userRouter.post('/signin', userAuth, (req, res, next) => {
   res.status(200).json({ token: req.token, currentJournal: req.email.selectedJournal })
 })
 
-userRouter.get('/oauth', oAuth, (req, res, next) => {
-  res.status(200).json({ message: 'signed in with oauth' })
+userRouter.get('/googleOAuth', googleOAuth, (req, res, next) => {
+  res.status(200).json({ token: req.token })
 })
 
 userRouter.get('/gitHubOAuth', gitHubOAuth, (req, res, next) => {
-  res.status(200).json({ message: 'signed in with oauth' })
+  res.status(200).json({ token: req.token })
 })
 
 module.exports = userRouter
