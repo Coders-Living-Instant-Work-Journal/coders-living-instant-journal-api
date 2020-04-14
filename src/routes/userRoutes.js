@@ -1,21 +1,35 @@
 // dependecies
 const express = require('express')
+const superagent = require('superagent')
 const userRouter = express.Router()
 
 const User = require('../models/user')
 const userAuth = require('../middleware/userAuth')
-const oAuth = require('../middleware/oauth')
+const oAuth = require('../middleware/googleOauth')
+const gitHubOAuth = require('../middleware/oauth')
 
-// Takes in the request body and constructs a new User instance
-// Stores that user instance to the user collection
-// Then an access token is generated and returned to the client
-userRouter.post('/signup', async (req, res, next) => {
-  const user = new User(req.body)
-  await user.save()
-    .then(result => {
-      res.status(200).json({ token: user.generateToken() })
-    })
-    .catch(next)
+// Takes in the provider name, access token, and user e-mail
+userRouter.post('/authenticate', async (req, res) => {
+  try {
+    let user
+    // Validates access token with provider and grabs the user's external ID and name
+    const response = await superagent
+      .get('https://api.github.com/user')
+      .set('Authorization', `token ${req.body.token}`)
+      .set('user-agent', 'express-app')
+
+    // Checks if user exists in DB with external ID
+    const potentialUser = await User.findOne({ extId: response.body.node_id })
+    // Stores that user instance to the user collection if user doesn't exist
+    if (!potentialUser) {
+      const newUser = new User({ extId: response.body.node_id, name: response.body.name, email: req.body.email })
+      user = await newUser.save()
+    } else user = potentialUser
+    // Then a token is generated and returned to the client
+    res.status(200).json({ token: user.generateToken() })
+  } catch (error) {
+    console.log(error)
+  }
 })
 
 // Calls the userAuth middleware
@@ -25,6 +39,10 @@ userRouter.post('/signin', userAuth, (req, res, next) => {
 })
 
 userRouter.get('/oauth', oAuth, (req, res, next) => {
+  res.status(200).json({ message: 'signed in with oauth' })
+})
+
+userRouter.get('/gitHubOAuth', gitHubOAuth, (req, res, next) => {
   res.status(200).json({ message: 'signed in with oauth' })
 })
 
