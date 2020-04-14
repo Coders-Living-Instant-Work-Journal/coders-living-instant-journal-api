@@ -155,3 +155,86 @@ deletes all entries in the journal
   id: <id of the journal to be deleted>
   
   ```
+
+## Email routes
+
+- `POST /createEmailProfile` --> returns a json of the email profile
+```
+    [RESPONSE]
+    {
+      '_id': email id
+      'category': category name
+      'emailAddr': user email
+      'emailFreq': integer of how many days between each email.
+      'emailTime': time of the day the email will be sent
+      'entryRange': number of days back to present the emailer will search for entries
+      journalId: journal the user picked for the email profile
+      profileName: name the user gives this email profile
+      userId: the user associated with this email profile
+    }
+
+    [HEADERS]
+    'Authorization": "Bearer <bearer token>" 
+    [BODY]
+    profileName: <string>
+    journalId: <string>
+    emailFreq: <number>
+    emailTime: <number>
+    entryRange: <number>
+    emailAddre: <string>
+    category: <string>
+```
+
+- `GET /readEmailProfiles` --> returns a JSON object with all of the user's email profiles
+
+```
+    [RESPONSE]
+    [
+      {
+        same object as /createEmailProfile
+      }
+    ]
+
+    [HEADERS]
+    'Authorization": "Bearer <bearer token>"
+    [BODY]
+```
+
+- `PUT /updateEmailProfile` --> returns a JSON object with the user's updated email profile
+
+```
+    [RESPONSE]
+    [
+      {
+        same object as /createEmailProfile
+      }
+    ]
+
+    [HEADERS]
+    'Authorization": "Bearer <bearer token>"
+    [BODY]
+    id: <string>
+    profileName: <string>
+    journalId: <string>
+    emailFreq: <number>
+    emailTime: <number>
+    entryRange: <number>
+    emailAddre: <string>
+    category: <string>
+```
+
+- `DELETE /deleteEmailProfile` --> returns a JSON object of the user's deleted email profile
+
+```
+    [RESPONSE]
+    [
+      {
+        same object as /createEmailProfile
+      }
+    ]
+
+    [HEADERS]
+    'Authorization": "Bearer <bearer token>"
+    [BODY]
+    id: <string>
+```
