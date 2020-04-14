@@ -24,7 +24,7 @@ userRouter.post('/authenticate', async (req, res) => {
       // if user attempts to sign-in but the user does not exist, return an error
       if (!potentialUser) res.status(401).send('User does not exist. Please sign-up.')
       // otherwise generate a token and return to client
-      else res.status(200).json({ token: potentialUser.generateToken })
+      else res.status(200).json({ token: potentialUser.generateToken() })
     } else if (!req.body.currentUser) {
       if (!potentialUser) {
         // Stores that user instance to the user collection if user doesn't exist
