@@ -1,7 +1,7 @@
 const User = require('../models/user')
 
 // Authenticates that the token provided is valid
-function bearerAuth (req, res, next) {
+function emailAuth (req, res, next) {
   console.log(req.headers)
   if (!req.headers.authorization) {
     next(new Error('Missing authorization header'))
@@ -11,7 +11,6 @@ function bearerAuth (req, res, next) {
     User.authenticateToken(token)
       .then(validUser => {
         req.body.userId = validUser._id
-        req.body.journalId = validUser.selectedJournal
         req.user = validUser
         next()
       })
@@ -21,4 +20,4 @@ function bearerAuth (req, res, next) {
   }
 }
 
-module.exports = bearerAuth
+module.exports = emailAuth
