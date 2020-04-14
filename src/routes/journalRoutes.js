@@ -12,7 +12,7 @@ const User = require('../models/user')
 // also adds the user id and selected journal id to the req.body
 
 // updates the selectedJournal field of the user with the chosen journal id
-journalRouter.post('/selectj', bearerAuth, async (req, res, next) => {
+journalRouter.post('/selectj', async (req, res, next) => {
   await User.updateOne({ _id: req.body.userId }, { selectedJournal: req.body.jId })
   res.status(202).send(`
     You've selected the journal: "${req.body.name}"`)
@@ -20,7 +20,7 @@ journalRouter.post('/selectj', bearerAuth, async (req, res, next) => {
 
 // creates a new journal instance and stores it the the DB
 // also updates the selectedJournal field of the user with the chosen journal id
-journalRouter.post('/createj', bearerAuth, async (req, res, next) => {
+journalRouter.post('/createj', async (req, res, next) => {
   const journal = new Journal(req.body)
   await journal.save()
     .then(async result => {
@@ -31,13 +31,13 @@ journalRouter.post('/createj', bearerAuth, async (req, res, next) => {
 })
 
 // returns a list of all the user's journals
-journalRouter.get('/readj', bearerAuth, async (req, res, next) => {
+journalRouter.get('/readj', async (req, res, next) => {
   const allJournal = await Journal.find({ userId: req.body.userId })
   res.status(200).json(allJournal)
 })
 
 // changes the name field of the specified journal
-journalRouter.put('/updatej', bearerAuth, async (req, res, next) => {
+journalRouter.put('/updatej', async (req, res, next) => {
   await Journal.updateOne({ _id: req.body.id }, { name: req.body.name })
   res.status(202).send(`
     Updating journal name to: "${req.body.name}"`)
@@ -46,7 +46,7 @@ journalRouter.put('/updatej', bearerAuth, async (req, res, next) => {
 // first finds all entrys of given journal
 // then deletes each entry one by one
 // finally deletes the given journal
-journalRouter.delete('/deletej', bearerAuth, async (req, res, next) => {
+journalRouter.delete('/deletej', async (req, res, next) => {
   const toBeDeleted = await Journal.findOne({ _id: req.body.id })
   toBeDeleted.entryIds.forEach(async (obj) => { await Entry.findByIdAndDelete(obj._id) })
   const deletedJournal = await Journal.findByIdAndDelete(req.body.id)
