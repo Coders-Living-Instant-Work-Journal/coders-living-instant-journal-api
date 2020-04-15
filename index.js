@@ -27,7 +27,7 @@ async function getUserEntries (foundProfiles) {
   const today = current.getDate()
   console.log(today)
   await foundProfiles.forEach(async profile => {
-    console.log(profile.everyMonth === false || (profile.everyMonth === true && profile.dayOfMonth === today))
+    console.log(profile.everyMonth === false || (profile.everyMonth === true && profile.dayOfMonth.includes(today)))
     if (profile.biWeekly && !profile.thisWeek) await Email.findOneAndUpdate({ _id: profile._id }, { thisWeek: true })
     else if (profile.everyMonth === false || (profile.everyMonth === true && profile.dayOfMonth === today)) {
       await Email.findOneAndUpdate({ _id: profile._id }, { thisWeek: false })
