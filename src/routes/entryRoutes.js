@@ -12,7 +12,7 @@ const Journal = require('../models/journal')
 // first adds the current time/date to the req.body
 // then creates a new Entry instance
 // saves the instance to the entry collection
-entryRouter.post('/create', async (req, res, next) => {
+entryRouter.post('/create', bearerAuth, async (req, res, next) => {
   req.body.date = (new Date()).toLocaleString()
   const entry = new Entry(req.body)
   await entry.save()
@@ -25,10 +25,7 @@ entryRouter.post('/create', async (req, res, next) => {
 
 // Entry search route
 // find entries for that user's selected journal
-entryRouter.get('/read', async (req, res, next) => {
-  req.body.journalId = '5e95ece5413b4708abf002c2'
-  req.body.userId = 'MDQ6VXNlcjQ2NjI4MDQ5'
-  console.log('req body', req.body)
+entryRouter.get('/read', bearerAuth, async (req, res, next) => {
   let allEntries
   // check if a category was sent
   if (req.body.category) {
@@ -85,7 +82,7 @@ entryRouter.get('/read', async (req, res, next) => {
 })
 
 // Update entry route
-entryRouter.put('/update', async (req, res, next) => {
+entryRouter.put('/update', bearerAuth, async (req, res, next) => {
   // checks if both text and category are to be changed
   if (req.body.text && req.body.category) {
     // changes the entry text and category
@@ -112,7 +109,7 @@ entryRouter.put('/update', async (req, res, next) => {
 })
 
 // Deletes the entry with the given ID
-entryRouter.delete('/delete', async (req, res, next) => {
+entryRouter.delete('/delete', bearerAuth, async (req, res, next) => {
   const deletedEntry = await Entry.findByIdAndDelete(req.body.id)
   res.status(202).send(`The following journal entry was deleted: \n{\n\tid: ${deletedEntry._id}\n\tdate: ${deletedEntry.date}\n\tcategory:${deletedEntry.category}\n\ttext:${deletedEntry.text}\n}`)
 })
