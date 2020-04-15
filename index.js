@@ -61,16 +61,20 @@ async function getUserEntries (foundProfiles) {
 }
 const schedule = require('node-schedule')
 
-const emailScheduler = schedule.scheduleJob('00 50 * * * *', async function () {
+const emailScheduler = schedule.scheduleJob('*/15 * * * *', async function () {
   const current = new Date()
   const time = current.getHours() + ':' + current.getMinutes()
-  const foundProfiles = await searchEmailProfiles(time)
+  const day = current.getDay()
+  console.log(day)
+  const foundProfiles = await searchEmailProfiles(time, day)
   console.log('foundProfiles ', foundProfiles)
   getUserEntries(foundProfiles)
-  // foundProfiles.forEach(profile => Entry.find({ }))
 })
 
-async function searchEmailProfiles (time) {
-  const allProfiles = await Email.find({ emailTime: time })
+async function searchEmailProfiles (time, day) {
+  console.log(time)
+  
+  console.log(day)
+  const allProfiles = await Email.find({ emailTime: time, emailDay: day })
   return allProfiles
 }
