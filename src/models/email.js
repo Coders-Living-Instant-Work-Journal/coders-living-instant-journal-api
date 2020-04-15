@@ -7,6 +7,7 @@ const email = new mongoose.Schema({
   emailFreq: { type: Number, required: true },
   emailDay: { type: Number, required: true },
   emailTime: { type: String, require: true },
+  biWeekly: { type: Boolean, require: true },
   thisWeek: { type: Boolean, require: true },
   entryRange: { type: Number, required: true },
   profileName: { type: String, required: true, unique: true },
