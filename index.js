@@ -18,6 +18,7 @@ let allUserIDs = []
 const app = require('./src/app')
 app.start(PORT)
 const Entry = require('./src/models/entry')
+const Email = require('./src/models/email')
 
 async function getAllUserIDs () {
   const allUsers = await User.find({})
@@ -27,20 +28,24 @@ async function getAllUserIDs () {
   getUserEntries(allUserIDs)
   allUserIDs = []
 }
-async function getUserEntries (allUserIDs) {
-  await allUserIDs.forEach(async user => {
+
+async function getUserEntries (foundProfiles) {
+  console.log('foundProfiles ', foundProfiles)
+  await foundProfiles.forEach(async profile => {
     const startDate = new Date()
     const endDate = new Date()
-    endDate.setDate(endDate.getDate() - 1)
+    endDate.setDate(endDate.getDate() - profile.entryRange)
     console.log(endDate, ' - ', startDate)
     const allEntries = await Entry.find({
-      userId: user[0],
+      userId: profile.userId,
+      journalId: profile.journalId,
+      category: profile.category,
       date: {
         $gte: endDate,
         $lte: startDate
       }
     })
-    let emailEntries = `<p>All entries for ${user[2]}</p> <hr>`
+    let emailEntries = `<p>All entries for ${profile.userId.name}</p> <hr>`
     allEntries.forEach(entry => {
       emailEntries += '<p></p>'
       emailEntries += `<p> Entry Date & Time: ${entry.date.toLocaleString()}`
@@ -51,11 +56,21 @@ async function getUserEntries (allUserIDs) {
       emailEntries += '<hr>'
     })
     console.log('the users email ', emailEntries)
-    await sendEmail(emailEntries, user[1])
+    await sendEmail(emailEntries, profile.emailAddr)
   })
 }
 const schedule = require('node-schedule')
 
-const emailScheduler = schedule.scheduleJob('00 30 16 * * *', function () {
-  getAllUserIDs()
+const emailScheduler = schedule.scheduleJob('00 50 * * * *', async function () {
+  const current = new Date()
+  const time = current.getHours() + ':' + current.getMinutes()
+  const foundProfiles = await searchEmailProfiles(time)
+  console.log('foundProfiles ', foundProfiles)
+  getUserEntries(foundProfiles)
+  // foundProfiles.forEach(profile => Entry.find({ }))
 })
+
+async function searchEmailProfiles (time) {
+  const allProfiles = await Email.find({ emailTime: time })
+  return allProfiles
+}
