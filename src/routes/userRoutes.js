@@ -39,18 +39,16 @@ userRouter.post('/authenticate', async (req, res) => {
   }
 })
 
-// Calls the userAuth middleware
+// Calls the googleAuth middleware
 // If the checks pass then the client is sent an access token
-userRouter.post('/signin', userAuth, (req, res, next) => {
-  res.status(200).json({ token: req.token, currentJournal: req.email.selectedJournal })
+userRouter.get('/googleOAuth', googleOAuth, (req, res) => {
+  res.cookie('Auth-Token', req.token).redirect('http://localhost:3333/')
 })
 
-userRouter.get('/googleOAuth', googleOAuth, (req, res, next) => {
-  res.status(200).json({ token: req.token })
-})
-
-userRouter.get('/gitHubOAuth', gitHubOAuth, (req, res, next) => {
-  res.cookie('Github-auth', req.token).redirect('http://localhost:3333/')
+// Calls the gitHubAuth middleware
+// If the checks pass then the client is sent an access token
+userRouter.get('/gitHubOAuth', gitHubOAuth, (req, res) => {
+  res.cookie('Auth-Token', req.token).redirect('http://localhost:3333/')
 })
 
 module.exports = userRouter
