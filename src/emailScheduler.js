@@ -1,5 +1,8 @@
 // dependencies
 require('dotenv').config()
+
+const Email = require('./models/email')
+
 const { MAILGUN_API_KEY, MAILGUN_DOMAIN } = process.env
 const mailgun = require('mailgun-js')
 const mg = mailgun({

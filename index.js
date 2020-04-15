@@ -11,29 +11,25 @@ const sendEmail = require('./src/emailScheduler')
 mongoose.connect(MONGODB_URI, options, () => {
   console.log('Connected to MongoDB.')
 })
-const User = require('./src/models/user')
-let allUserIDs = []
 
 // start express server
 const app = require('./src/app')
 app.start(PORT)
 const Entry = require('./src/models/entry')
 const Email = require('./src/models/email')
-
-async function getAllUserIDs () {
-  const allUsers = await User.find({})
-  await allUsers.forEach(user => {
-    allUserIDs.push([user._id, user.email, user.name])
-  })
-  getUserEntries(allUserIDs)
-  allUserIDs = []
-}
+// const getUserEntries = require('./src/emailScheduler')
+const schedule = require('node-schedule')
 
 async function getUserEntries (foundProfiles) {
-  console.log('foundProfiles ', foundProfiles)
+  console.log(foundProfiles)
+  
+  const current = new Date()
+  const today = current.getDate()
+  console.log(today)
   await foundProfiles.forEach(async profile => {
+    console.log(profile.everyMonth === false || (profile.everyMonth === true && profile.dayOfMonth === today))
     if (profile.biWeekly && !profile.thisWeek) await Email.findOneAndUpdate({ _id: profile._id }, { thisWeek: true })
-    else {
+    else if (profile.everyMonth === false || (profile.everyMonth === true && profile.dayOfMonth === today)) {
       await Email.findOneAndUpdate({ _id: profile._id }, { thisWeek: false })
       const startDate = new Date()
       const endDate = new Date()
@@ -63,9 +59,8 @@ async function getUserEntries (foundProfiles) {
     }
   })
 }
-const schedule = require('node-schedule')
 
-const emailScheduler = schedule.scheduleJob('*/15 * * * *', async function () {
+schedule.scheduleJob('*/15 * * * *', async function () {
   const current = new Date()
   const time = current.getHours() + ':' + current.getMinutes()
   const day = current.getDay()
@@ -74,8 +69,6 @@ const emailScheduler = schedule.scheduleJob('*/15 * * * *', async function () {
 })
 
 async function searchEmailProfiles (time, day) {
-  console.log(time)
-  console.log(day)
   const allProfiles = await Email.find({ emailTime: time, emailDay: day })
   return allProfiles
 }
