@@ -50,7 +50,7 @@ userRouter.get('/googleOAuth', googleOAuth, (req, res, next) => {
 })
 
 userRouter.get('/gitHubOAuth', gitHubOAuth, (req, res, next) => {
-  res.status(200).json({ token: req.token })
+  res.cookie('Github-auth', req.token).redirect('http://localhost:3333/')
 })
 
 module.exports = userRouter
