@@ -22,14 +22,14 @@ const schedule = require('node-schedule')
 
 async function getUserEntries (foundProfiles) {
   console.log(foundProfiles)
-  
+
   const current = new Date()
   const today = current.getDate()
   console.log(today)
   await foundProfiles.forEach(async profile => {
     console.log(profile.everyMonth === false || (profile.everyMonth === true && profile.dayOfMonth.includes(today)))
     if (profile.biWeekly && !profile.thisWeek) await Email.findOneAndUpdate({ _id: profile._id }, { thisWeek: true })
-    else if (profile.everyMonth === false || (profile.everyMonth === true && profile.dayOfMonth === today)) {
+    else if (profile.everyMonth === false || (profile.everyMonth === true && profile.dayOfMonth.includes(today))) {
       await Email.findOneAndUpdate({ _id: profile._id }, { thisWeek: false })
       const startDate = new Date()
       const endDate = new Date()

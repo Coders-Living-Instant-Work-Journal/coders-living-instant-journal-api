@@ -42,13 +42,13 @@ userRouter.post('/authenticate', async (req, res) => {
 // Calls the googleAuth middleware
 // If the checks pass then the client is sent an access token
 userRouter.get('/googleOAuth', googleOAuth, (req, res) => {
-  res.cookie('auth', req.token).redirect('http://localhost:3333/')
+  res.cookie('Auth-Token', req.token).redirect('http://localhost:3333/')
 })
 
 // Calls the gitHubAuth middleware
 // If the checks pass then the client is sent an access token
 userRouter.get('/gitHubOAuth', gitHubOAuth, (req, res) => {
-  res.cookie('auth', req.token).redirect('http://localhost:3333/')
+  res.cookie('Auth-Token', req.token).redirect('http://localhost:3333/')
 })
 
 module.exports = userRouter

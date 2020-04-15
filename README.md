@@ -162,27 +162,35 @@ deletes all entries in the journal
 ```
     [RESPONSE]
     {
-      '_id': email id
-      'category': category name
-      'emailAddr': user email
-      'emailFreq': integer of how many days between each email.
-      'emailTime': time of the day the email will be sent
-      'entryRange': number of days back to present the emailer will search for entries
-      journalId: journal the user picked for the email profile
-      profileName: name the user gives this email profile
-      userId: the user associated with this email profile
+      `_id`: email profile id
+      `profileName`: name the user gives this email profile
+      `journalId`: journal the user picked for the email profile
+      `emailTime`: time of the day the email will be sent
+      `entryRange`: number of days back to present the emailer will search for entries
+      `emailAddr`: user email
+      `category`: category name
+      `biWeekly`: set to `true` if the user is selecting the bi-weekly option, otherwise `false`
+      `thisWeek`: when `biWeekly` is set to `true`, this value will need to be `true` for for the week the email is to be sent; `false` for the week the e-mail is not to be sent
+      `everyMonth`: set to `true` if the user is selecting the monthly option, otherwise `false`
+      `dayOfMonth`: array of integers between 1-31; used when `everyMonth` is set to `true`; this field is optional, unless the montly option is selected
+      `emailDay`: array of integers with values between 0 - 6. 0 = Sunday, 6 = Saturday
+      `userId`: the user associated with this email profile
     }
 
     [HEADERS]
     'Authorization": "Bearer <bearer token>" 
     [BODY]
-    profileName: <string>
-    journalId: <string>
-    emailFreq: <number>
-    emailTime: <number>
-    entryRange: <number>
-    emailAddre: <string>
-    category: <string>
+    `profileName`: <string>
+    `journalId`: <string>
+    `emailTime`: <number> (24 hour time, 15 minute increments)
+    `entryRange`: <number>
+    `emailAddre`: <string>
+    `category`: <string>
+    `biWeekly`: <boolean>
+    `thisWeek`: <boolean>
+    `everyMonth`: <boolean>
+    `dayOfMonth`: <array[integers]>
+    `emailDay`: <array[integers]>    
 ```
 
 - `GET /readEmailProfiles` --> returns a JSON object with all of the user's email profiles
@@ -213,14 +221,18 @@ deletes all entries in the journal
     [HEADERS]
     'Authorization": "Bearer <bearer token>"
     [BODY]
-    id: <string>
-    profileName: <string>
-    journalId: <string>
-    emailFreq: <number>
-    emailTime: <number>
-    entryRange: <number>
-    emailAddre: <string>
-    category: <string>
+    `_id`: <string>
+    `profileName`: <string>
+    `journalId`: <string>
+    `emailTime`: <number>
+    `entryRange`: <number>
+    `emailAddre`: <string>
+    `category`: <string>
+    `biWeekly`: <boolean>
+    `thisWeek`: <boolean>
+    `everyMonth`: <boolean>
+    `dayOfMonth`: <array[integers]>
+    `emailDay`: <array[integers]> 
 ```
 
 - `DELETE /deleteEmailProfile` --> returns a JSON object of the user's deleted email profile
