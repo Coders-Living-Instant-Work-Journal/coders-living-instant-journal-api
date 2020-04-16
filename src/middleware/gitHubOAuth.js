@@ -4,6 +4,7 @@ const User = require('../models/user')
 const TOKEN_SERVER_URL = process.env.TOKEN_SERVER_URL
 const CLIENT_SECRET = process.env.GITHUB_APP_CLIENT_SECRET
 const REMOTE_API_ENDPOINT = 'https://api.github.com/user'
+const REDIRECT_URI = process.env.REDIRECT_URI
 
 async function exchangeCodeForToken (code) {
   console.log('exchange code', code)
@@ -13,7 +14,7 @@ async function exchangeCodeForToken (code) {
       client_id: process.env.GITHUB_CLIENT_ID,
       client_secret: CLIENT_SECRET,
       code: code,
-      redirect_uri: 'http://localhost:3000/gitHubOAuth',
+      redirect_uri: REDIRECT_URI,
       state: 'thisIsMyState'
     })
   console.log(response.body)
