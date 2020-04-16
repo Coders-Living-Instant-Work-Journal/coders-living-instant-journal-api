@@ -53,9 +53,9 @@ userRouter.get('/gitHubOAuth', gitHubOAuth, (req, res) => {
   // console.log('res in gitHubOAuth', req.token)
 
   // res.cookie('Auth-Token', req.token).redirect(WEBAPP_REDIRECT)
-  res.cookie('Auth-Token', req.token)
+  // res.cookie('Auth-Token', req.token)
   // console.log('res in gitHubOAuth', res)
-  res.redirect(WEBAPP_REDIRECT)
+  res.redirect(`${WEBAPP_REDIRECT}?token=${req.token}`)
 })
 
 module.exports = userRouter
