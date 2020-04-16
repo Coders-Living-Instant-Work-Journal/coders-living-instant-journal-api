@@ -8,7 +8,6 @@ const SHHHHH = process.env.SHHHHH
 const user = new mongoose.Schema({
   extId: { type: String, required: true, unique: true },
   name: { type: String, required: true },
-  email: { type: String, required: false },
   selectedJournal: { type: mongoose.Schema.Types.ObjectId, ref: 'journal' }
 })
 
@@ -18,15 +17,6 @@ user.methods.generateToken = function () {
     id: this._id
   }
   return jwt.sign(tokenData, SHHHHH)
-}
-
-// Finds the user document with the given email
-// calls the comparePassword method
-user.statics.authenticateUser = function (email, password) {
-  return this.findOne({ email })
-    .then(result => {
-      return result && result.comparePassword(password)
-    })
 }
 
 // decodes the provided token

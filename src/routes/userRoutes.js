@@ -4,7 +4,6 @@ const superagent = require('superagent')
 const userRouter = express.Router()
 
 const User = require('../models/user')
-const userAuth = require('../middleware/userAuth')
 const googleOAuth = require('../middleware/googleOAuth')
 const gitHubOAuth = require('../middleware/gitHubOAuth')
 
