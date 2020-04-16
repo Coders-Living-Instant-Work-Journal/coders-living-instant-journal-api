@@ -8,6 +8,8 @@ const userAuth = require('../middleware/userAuth')
 const googleOAuth = require('../middleware/googleOAuth')
 const gitHubOAuth = require('../middleware/gitHubOAuth')
 
+const { WEBAPP_REDIRECT } = process.env
+
 // Takes in the provider name, access token, and user e-mail
 userRouter.post('/authenticate', async (req, res) => {
   try {
@@ -42,13 +44,18 @@ userRouter.post('/authenticate', async (req, res) => {
 // Calls the googleAuth middleware
 // If the checks pass then the client is sent an access token
 userRouter.get('/googleOAuth', googleOAuth, (req, res) => {
-  res.cookie('Auth-Token', req.token).redirect('http://localhost:3333/')
+  res.cookie('Auth-Token', req.token).redirect(WEBAPP_REDIRECT)
 })
 
 // Calls the gitHubAuth middleware
 // If the checks pass then the client is sent an access token
 userRouter.get('/gitHubOAuth', gitHubOAuth, (req, res) => {
-  res.cookie('Auth-Token', req.token).redirect('http://localhost:3333/')
+  // console.log('res in gitHubOAuth', req.token)
+
+  // res.cookie('Auth-Token', req.token).redirect(WEBAPP_REDIRECT)
+  res.cookie('Auth-Token', req.token)
+  // console.log('res in gitHubOAuth', res)
+  res.redirect(WEBAPP_REDIRECT)
 })
 
 module.exports = userRouter
