@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 
 const entry = mongoose.Schema({
-  userId: { type: mongoose.Schema.Types.ObjectId, ref: 'user' },
+  userId: { type: mongoose.Schema.Types.ObjectId, ref: 'user', autopopulate: true },
   journalId: { type: mongoose.Schema.Types.ObjectId, ref: 'journal', autopopulate: true },
   category: { type: String, required: true },
   text: { type: String, required: true },
