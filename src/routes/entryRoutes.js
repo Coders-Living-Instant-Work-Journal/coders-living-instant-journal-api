@@ -84,27 +84,28 @@ entryRouter.get('/read', bearerAuth, async (req, res, next) => {
 // Update entry route
 entryRouter.put('/update', bearerAuth, async (req, res, next) => {
   // checks if both text and category are to be changed
+  const response = await Entry.find({ _id: req.body.id })
   if (req.body.text && req.body.category) {
     // changes the entry text and category
     await Entry.updateOne({ _id: req.body.id }, { text: req.body.text, category: req.body.category })
+    response.text = req.body.text
+    response.category = req.body.category
     // respond with message of change(s)
-    res.status(202).send(`
-    Updating note text to: "${req.body.text}" 
-    Updating note category to: "${req.body.category}"`)
+    res.status(202).json(response)
     // checks if just the text is to be changed
   } else if (req.body.text) {
     // changes the entry text
     await Entry.updateOne({ _id: req.body.id }, { text: req.body.text })
+    response.text = req.body.text
     // respond with message of change(s)
-    res.status(202).send(`
-    Updating note text to: "${req.body.text}"`)
+    res.status(202).json(response)
     // checks if just the category is to be changed
   } else if (req.body.category) {
     // changes the entry category
     await Entry.updateOne({ _id: req.body.id }, { text: req.body.category })
+    response.category = req.body.category
     // respond with message of change(s)
-    res.status(202).send(`
-    Updating note category to: "${req.body.category}"`)
+    res.status(202).json(response)
   }
 })
 
