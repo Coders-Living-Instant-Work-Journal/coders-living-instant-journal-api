@@ -44,7 +44,7 @@ async function getUserEntries (foundProfiles) {
           $lte: startDate
         }
       })
-      let emailEntries = `<p>All entries for ${profile.userId.name}</p> <hr>`
+      let emailEntries = `<p>All entries for ${allEntries[0].userId.name}</p> <hr>`
       allEntries.forEach(entry => {
         emailEntries += '<p></p>'
         emailEntries += `<p> Entry Date & Time: ${entry.date.toLocaleString()}`
