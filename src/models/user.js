@@ -15,9 +15,7 @@ const user = new mongoose.Schema({
 // creates a json web token with the user email and secret
 user.methods.generateToken = function () {
   const tokenData = {
-    id: this._id,
-    name: this.name,
-    email: this.email
+    id: this._id
   }
   return jwt.sign(tokenData, SHHHHH)
 }
@@ -37,8 +35,8 @@ user.statics.authenticateUser = function (email, password) {
 user.statics.authenticateToken = async function (token) {
   try {
     const tokenObj = jwt.verify(token, SHHHHH)
-    if (!tokenObj.email) return Promise.reject(new Error('Not a valid token.'))
-    const validUser = await this.findOne({ email: tokenObj.email })
+    if (!tokenObj.id) return Promise.reject(new Error('Not a valid token.'))
+    const validUser = await this.findOne({ _id: tokenObj.id })
     return validUser
   } catch (error) {
     return Promise.reject(error)

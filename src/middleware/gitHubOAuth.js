@@ -5,7 +5,7 @@ const TOKEN_SERVER_URL = process.env.TOKEN_SERVER_URL
 const CLIENT_SECRET = process.env.GITHUB_APP_CLIENT_SECRET
 const REMOTE_API_ENDPOINT = 'https://api.github.com/user'
 
-async function exchangeCodeForToken (code) {
+async function exchangeCodeForToken(code) {
   console.log('exchange code', code)
   const response = await superagent
     .post(TOKEN_SERVER_URL)
@@ -20,7 +20,7 @@ async function exchangeCodeForToken (code) {
   return response.body.access_token
 }
 
-async function getRemoteUsername (token) {
+async function getRemoteUsername(token) {
   const response = await superagent
     .get(REMOTE_API_ENDPOINT)
     .set('Authorization', `token ${token}`)
@@ -28,14 +28,14 @@ async function getRemoteUsername (token) {
   return response.body
 }
 
-async function getUser (userInfo) {
+async function getUser(userInfo) {
   // do we already have the user created?
   const potentialUser = await User.findOne({ extId: userInfo.node_id })
   console.log(potentialUser)
   let user
   if (!potentialUser) {
     // create the user
-    const newUser = new User({ name: userInfo.name, email: userInfo.email, extId: userInfo.node_id })
+    const newUser = new User({ name: userInfo.name, extId: userInfo.node_id })
     user = await newUser.save()
   } else {
     user = potentialUser
@@ -44,7 +44,7 @@ async function getUser (userInfo) {
   return [user, token]
 }
 
-async function handleOauth (req, res, next) {
+async function handleOauth(req, res, next) {
   try {
     const { code } = req.query
     console.log('(1) CODE:', code)
