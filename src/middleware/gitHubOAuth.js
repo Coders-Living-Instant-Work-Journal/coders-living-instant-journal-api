@@ -36,7 +36,7 @@ async function getUser (userInfo) {
   let user
   if (!potentialUser) {
     // create the user
-    const newUser = new User({ name: userInfo.name, email: userInfo.email, extId: userInfo.node_id })
+    const newUser = new User({ name: userInfo.name, extId: userInfo.node_id })
     user = await newUser.save()
   } else {
     user = potentialUser
@@ -53,10 +53,10 @@ async function handleOauth (req, res, next) {
     console.log('(2) ACCESS TOKEN:', remoteToken)
     const userInfo = await getRemoteUsername(remoteToken)
     console.log('(3) GITHUB USER:', userInfo)
-    const remoteUserEmail = userInfo.email
+    const remoteUserExtId = userInfo.extId
     const remoteUserName = userInfo.name
     console.log('(3) GITHUB USER Name:', remoteUserName)
-    console.log('(3) GITHUB USER E-mail:', remoteUserEmail)
+    console.log('(3) GITHUB USER E-mail:', remoteUserExtId)
     const [user, token] = await getUser(userInfo)
     req.user = user
     req.token = token

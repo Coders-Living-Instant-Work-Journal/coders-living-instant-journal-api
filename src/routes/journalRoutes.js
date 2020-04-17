@@ -49,7 +49,7 @@ journalRouter.put('/updatej', bearerAuth, async (req, res, next) => {
 journalRouter.delete('/deletej', bearerAuth, async (req, res, next) => {
   const toBeDeleted = await Journal.findOne({ _id: req.body.id })
   toBeDeleted.entryIds.forEach(async (obj) => { await Entry.findByIdAndDelete(obj._id) })
-  const deletedJournal = await Journal.findByIdAndDelete(req.body.id)
+  await Journal.findByIdAndDelete(req.body.id)
   const nextJournal = await Journal.find({})
   let journal = {}
   if (nextJournal.length > 0) {

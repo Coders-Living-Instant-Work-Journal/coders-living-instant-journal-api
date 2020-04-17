@@ -2,7 +2,7 @@
 const mongoose = require('mongoose')
 
 const email = new mongoose.Schema({
-  userId: { type: mongoose.Schema.Types.ObjectId, ref: 'user' },
+  userId: { type: mongoose.Schema.Types.ObjectId, ref: 'user', autopopulate: true },
   journalId: { type: mongoose.Schema.Types.ObjectId, ref: 'journal', autopopulate: true },
   emailDay: { type: Array, required: true },
   emailTime: { type: String, require: true },

@@ -20,14 +20,14 @@ async function exchangeCodeForToken (code) {
   return response.body
 }
 
-async function getUser (userName, userEmail) {
+async function getUser (userName, extId) {
   // do we already have the user created?
-  const potentialUser = await User.findOne({ email: userEmail })
+  const potentialUser = await User.findOne({ extId: extId })
   console.log(potentialUser)
   let user
   if (!potentialUser) {
     // create the user
-    const newUser = new User({ name: userName, email: userEmail })
+    const newUser = new User({ name: userName, extId: extId })
     user = await newUser.save()
   } else {
     user = potentialUser
@@ -44,11 +44,11 @@ async function handleOauth (req, res, next) {
     const userInfo = jwt.decode(remoteToken.id_token, { complete: true })
     console.log('User info: ', userInfo)
     console.log('(2) ACCESS TOKEN:', remoteToken.access_token)
-    const remoteUserEmail = userInfo.payload.email
+    const remoteUserExtId = userInfo.payload.sub
     const remoteUserName = userInfo.payload.name
     console.log('(3) GOOGLE USER Name:', remoteUserName)
-    console.log('(3) GOOGLE USER E-mail:', remoteUserEmail)
-    const [user, token] = await getUser(remoteUserName, remoteUserEmail)
+    console.log('(3) GOOGLE USER E-mail:', remoteUserExtId)
+    const [user, token] = await getUser(remoteUserName, remoteUserExtId)
     req.user = user
     req.token = token
     console.log('(4a) LOCAL USER:', user)
