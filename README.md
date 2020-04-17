@@ -250,3 +250,16 @@ deletes all entries in the journal
     [BODY]
     id: <string>
 ```
+
+- `POST /sendNow` --> immediately sends a user an email with their selected content
+```
+    [RESPONSE]
+    res.text: 'Email sent!'
+
+    [HEADERS]
+    'Authorization": "Bearer <bearer token>"
+    [BODY]
+    email: <string>
+    category: <string>
+    journalId: <string>
+    entryRange: <number>
