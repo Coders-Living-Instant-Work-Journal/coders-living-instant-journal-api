@@ -44,7 +44,7 @@ async function getUserEntries (foundProfiles) {
           $lte: startDate
         }
       })
-      let emailEntries = `<p>All entries for ${allEntries[0].userId.name}</p> <hr>`
+      let emailEntries = '<p>Here are your journal entries.</p> <hr>'
       allEntries.forEach(entry => {
         emailEntries += '<p></p>'
         emailEntries += `<p> Entry Date & Time: ${entry.date.toLocaleString()}`
@@ -60,7 +60,7 @@ async function getUserEntries (foundProfiles) {
   })
 }
 
-schedule.scheduleJob('*/15 * * * *', async function () {
+schedule.scheduleJob('*/5 * * * *', async function () {
   const current = new Date()
   const time = current.getHours() + ':' + current.getMinutes()
   const day = current.getDay()
