@@ -22,11 +22,9 @@ journalRouter.post('/selectj', bearerAuth, async (req, res, next) => {
 // also updates the selectedJournal field of the user with the chosen journal id
 journalRouter.post('/createj', bearerAuth, async (req, res, next) => {
   const journal = new Journal(req.body)
-  console.log('new journal', journal)
-  console.log(req.body)
   await journal.save()
     .then(async result => {
-      await User.updateOne({ _id: req.body.userId }, { selectedJournal: journal._id })
+      await User.updateOne({ _id: req.body.userId }, { selectedJournal: result._id })
       res.status(200).send(`The ${result.name} journal was created and selected`)
     })
     .catch(next)
