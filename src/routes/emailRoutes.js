@@ -22,8 +22,6 @@ emailRouter.get('/readEmailProfiles', emailAuth, async (req, res, next) => {
     const allEmailProfiles = await Email.find({ userId: req.body.userId })
     res.status(200).json(allEmailProfiles)
   } catch (next) {}
-  const allEmailProfiles = await Email.find({ userId: req.body.userId })
-  res.status(200).json(allEmailProfiles)
 })
 
 // Update an email profile
