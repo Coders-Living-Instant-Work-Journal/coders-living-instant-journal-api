@@ -24,8 +24,12 @@ user.methods.generateToken = function () {
 user.statics.authenticateToken = async function (token) {
   try {
     const tokenObj = jwt.verify(token, SHHHHH)
+    console.log('tokenObj', tokenObj)
+    
     if (!tokenObj.id) return Promise.reject(new Error('Not a valid token.'))
-    const validUser = await this.findOne({ id: tokenObj.id })
+    const validUser = await this.findOne({ _id: tokenObj.id })
+    console.log(validUser)
+    
     return validUser
   } catch (error) {
     return Promise.reject(error)
