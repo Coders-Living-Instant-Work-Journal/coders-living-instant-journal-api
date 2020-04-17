@@ -5,7 +5,7 @@ const jwt = require('jsonwebtoken')
 const TOKEN_SERVER_URL = 'https://oauth2.googleapis.com/token'
 const CLIENT_ID = '658078245679-9challjqn1drnapsmb4q2n27amg1u5sm.apps.googleusercontent.com'
 const CLIENT_SECRET = process.env.GOOGLE_APP_CLIENT_SECRET
-const API_SERVER = 'http://localhost:3000/oauth'
+const API_SERVER = 'https://clij.herokuapp.com/googleOAuth'
 
 async function exchangeCodeForToken (code) {
   const response = await superagent

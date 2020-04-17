@@ -15,7 +15,7 @@ async function exchangeCodeForToken (code) {
       client_secret: CLIENT_SECRET,
       code: code,
       redirect_uri: REDIRECT_URI,
-      state: 'thisIsMyState'
+      state: process.env.STATE
     })
   console.log(response.body)
   return response.body.access_token
