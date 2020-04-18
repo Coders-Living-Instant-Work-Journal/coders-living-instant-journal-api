@@ -112,7 +112,7 @@ entryRouter.put('/update', bearerAuth, async (req, res, next) => {
 // Deletes the entry with the given ID
 entryRouter.delete('/delete', bearerAuth, async (req, res, next) => {
   const deletedEntry = await Entry.findByIdAndDelete(req.body.id)
-  res.status(202).send(`The following journal entry was deleted: \n{\n\tid: ${deletedEntry._id}\n\tdate: ${deletedEntry.date}\n\tcategory:${deletedEntry.category}\n\ttext:${deletedEntry.text}\n}`)
+  res.status(202).json(deletedEntry)
 })
 
 module.exports = entryRouter
