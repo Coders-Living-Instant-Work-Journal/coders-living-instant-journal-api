@@ -15,6 +15,8 @@ const userRouter = require('./routes/userRoutes')
 app.use(userRouter)
 const journalRouter = require('./routes/journalRoutes')
 app.use(journalRouter)
+const emailRouter = require('./routes/emailRoutes')
+app.use(emailRouter)
 
 // Catch-alls
 const errorHandler = require('./middleware/errorHandler')
