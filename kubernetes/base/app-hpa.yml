@@ -1,0 +1,56 @@
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: cliwj-api-hpa
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: cliwj-api
+  minReplicas: 1
+  maxReplicas: 5
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averateUtilization: 80
+  - type: Resource
+    resource:
+      name: memory
+      target:
+        type: Utilization
+        averageUtilization: 80
+  - type: Pods
+    pods:
+      metric:
+        name: http_requests_per_second
+      target:
+        type: AverageValue
+        averageValue: 500
+  - type: Pods
+    pods:
+      metric:
+        name: response_time_seconds
+      target:
+        type: AverageValue
+        averageValue: 0.5 # Scale if avg response time > 500 ms
+  - type: Object
+    object:
+      metric:
+        name: active_users
+      describedObject:
+        apiVersion: v1
+        kind: Service
+        name: cliwj-api-service
+      target:
+        type: Value
+        value: 100
+  - type: External
+    external:
+      metric:
+        name: email_queue_length
+      target:
+        type: AverageValue
+        averageValue: 50 # Scale when email backlog grows

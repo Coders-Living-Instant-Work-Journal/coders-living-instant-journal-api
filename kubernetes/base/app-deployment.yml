@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cliwj-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cliwj-api
+  template:
+    metadata:
+      labels:
+        app: cliwj-api
+    spec:
+      containers:
+      - name: cliwj-api
+        image: cliwj-api:latest
+        imagePullPolicy: Never    # Added this line to use local image
+        ports:
+        - containerPort: 3000
+        envFrom:
+        - configMapRef:
+            name: cliwj-config
